@@ -14,19 +14,21 @@ def quit():
 def delete_text():
     #variables that would be used throughout the program
     global customer_name
-    customer_name.destroy(1.0, END)
 
-#print the details from user(not in use)
+#print the details from user
 def print():
-    Label(root, text=customer_name.get()).grid(row=4, column=1)
-    Label(root, text=receipt_number.get()).grid(row=4, column=2)
-    Label(root, text=item_hired.get()).grid(row=4, column=3)
-    Label(root, text=amount_hired.get()).grid(row=4, column=4)
+    #variables that would be used throughout the program
+    global tree, details
+    tree.insert(parent='', index='end', values=(details[0].get(), details[1].get(), details[2].get(), details[3].get()))
+    customer_name.delete(0, END)
+    receipt_number.delete(0, END)
+    item_hired.delete(0, END)    
+    amount_hired.delete(0, END)
 
 #creates the labels and buttons
 def info():
     #variables that would be used throughout the program
-    global customer_name, receipt_number, item_hired, amount_hired
+    global customer_name, receipt_number, item_hired, amount_hired, tree, details
     
     #Customer Name input
     Label(root, text='Customer Name').grid(row=0, column=0, padx=20, sticky=W)
@@ -49,9 +51,12 @@ def info():
     amount_hired.grid(row=1, column=3, padx=(0,20))
 
     #Buttons for print, delete & quit
-    Button(root, text="Print", command=quit).grid(row=1, column=4, padx=10, sticky=E)
-    Button(root, text="Delete", command=quit).grid(row=1, column=5, padx=10, sticky=E)
+    Button(root, text="Print", command=print).grid(row=1, column=4, padx=10, sticky=E)
+    Button(root, text="Delete", command=delete_text).grid(row=1, column=5, padx=10, sticky=E)
     Button(root, text="Quit", command=quit).grid(row=1, column=6, padx=10, sticky=E)
+
+    #Types User input 
+    details = [customer_name, receipt_number, item_hired, amount_hired]
 
     #Create the table format
     tree = ttk.Treeview(root, show='headings', height=8)
@@ -68,11 +73,9 @@ def info():
     tree.heading("Receipt", text="Receipt Number", anchor=W)
     tree.heading("Item", text="Hired Item", anchor=W)
     tree.heading("Amount", text="Amount Item", anchor=W)
-    #Testing input values (not actual functional input)
-    tree.insert(parent='', index='end', iid=0, values=("John", 3264, "Table", 23))
-    tree.insert(parent='', index='end', iid=1, values=("Alex", "adc5462", "Chair", 832))
 
     tree.place(x=20,y=80)
-info()
 
+info()
+    
 root.mainloop()
