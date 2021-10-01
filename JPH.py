@@ -18,43 +18,60 @@ def delete():
 #Check the inputs are valid
 def validate():
     #variables that would be used throughout the program
-    global details, check
+    global details, check, check1, check2, check3, check4
 
     #check if customer name input is valid 
-    if details[0].get().isalpha() and len(details[0].get()) > 2:
+    if details[0].get().isalpha() and len(details[0].get()) > 2:    
         Label(root, text="                   ").grid(row=2, column=0)
         Label(root, text="                   ").grid(row=3, column=0)
-        check = 0
+        check1 = 0
 
     else:
         Label(root, fg='red', text="Required").grid(row=2, column=0)
         Label(root, fg='red', text="(Letters)").grid(row=3, column=0)
-        check = 1
+        check1 = 1
     
     #check if receipt number input is valid
     if details[1].get().isdigit() and len(details[1].get()) == 4:
         Label(root, text="                  ").grid(row=2, column=1)
         Label(root, text="                  ").grid(row=3, column=1)
-        check = 0
+        check2 = 0
 
     else:
         Label(root, fg='red', text="Required").grid(row=2, column=1)    
         Label(root, fg='red', text="(4 Digits)").grid(row=3, column=1)    
-        check = 1
+        check2 = 1
 
     #check if item hired input is valid
     if details[2].get().isalpha() and len(details[2].get()) > 2:
         Label(root, text="                  ").grid(row=2, column=2)
         Label(root, text="                  ").grid(row=3, column=2)
-        check = 0
+        check3 = 0
 
     else:
         Label(root, fg='red', text="Required").grid(row=2, column=2)  
         Label(root, fg='red', text="(Letters)").grid(row=3, column=2)    
-        check = 1
+        check3 = 1
+
+    #check if amount hired input is valid
+    if (details[3].get().isdigit()):
+        if 1 <= int(details[3].get()) <= 500:
+            Label(root, text="                  ").grid(row=2, column=3)
+            Label(root, text="                  ").grid(row=3, column=3)
+            check4 = 0
+
+        else:
+            Label(root, fg='red', text="Required").grid(row=2, column=3)
+            Label(root, fg='red', text="(1-500)").grid(row=3, column=3)
+            check = 1  
+
+    else:
+        Label(root, fg='red', text="Required").grid(row=2, column=3)
+        Label(root, fg='red', text="(1-500)").grid(row=3, column=3)
+        check4 = 1
 
     #prints the details if all inputs are valid
-    if check == 0:
+    if check1 == 0 and check2 == 0 and check3==0 and check4 ==0:
         print()
 
 #print the details from user
