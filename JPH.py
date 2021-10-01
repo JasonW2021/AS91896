@@ -30,7 +30,8 @@ def validate():
         Label(root, fg='red', text="Required").grid(row=2, column=0)
         Label(root, fg='red', text="(Letters)").grid(row=3, column=0)
         check = 1
-
+    
+    #check if receipt number input is valid
     if details[1].get().isdigit() and len(details[1].get()) == 4:
         Label(root, text="                  ").grid(row=2, column=1)
         Label(root, text="                  ").grid(row=3, column=1)
@@ -39,6 +40,17 @@ def validate():
     else:
         Label(root, fg='red', text="Required").grid(row=2, column=1)    
         Label(root, fg='red', text="(4 Digits)").grid(row=3, column=1)    
+        check = 1
+
+    #check if item hired input is valid
+    if details[2].get().isalpha() and len(details[2].get()) > 2:
+        Label(root, text="                  ").grid(row=2, column=2)
+        Label(root, text="                  ").grid(row=3, column=2)
+        check = 0
+
+    else:
+        Label(root, fg='red', text="Required").grid(row=2, column=2)  
+        Label(root, fg='red', text="(Letters)").grid(row=3, column=2)    
         check = 1
 
     #prints the details if all inputs are valid
