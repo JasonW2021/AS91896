@@ -11,9 +11,29 @@ def quit():
     root.destroy()
 
 #delete a section (not working yet)
-def delete_text():
+def delete():
     #variables that would be used throughout the program
     global customer_name
+
+#Check the inputs are valid
+def validate():
+    #variables that would be used throughout the program
+    global details, check
+
+    #check if customer name input is valid 
+    if (details[0].get().isalpha() or details[0].get().isspace) and len(details[0].get()) > 2:
+        Label(root, text="                   ").grid(row=2, column=0)
+        Label(root, text="                   ").grid(row=3, column=0)
+        check = 0
+ 
+    else:
+        Label(root, fg='red', text=" Required").grid(row=2, column=0)
+        Label(root, fg='red', text=" Letters").grid(row=3, column=0)
+        check = 1
+
+    #prints the details if all inputs are valid
+    if check == 0:
+        print()
 
 #print the details from user
 def print():
@@ -28,7 +48,7 @@ def print():
 #creates the labels and buttons
 def info():
     #variables that would be used throughout the program
-    global customer_name, receipt_number, item_hired, amount_hired, tree, details
+    global customer_name, receipt_number, item_hired, amount_hired, tree, details, check
     
     #Customer Name input
     Label(root, text='Customer Name').grid(row=0, column=0, padx=20, sticky=W)
@@ -51,15 +71,17 @@ def info():
     amount_hired.grid(row=1, column=3, padx=(0,20))
 
     #Buttons for print, delete & quit
-    Button(root, text="Print", command=print).grid(row=1, column=4, padx=10, sticky=E)
-    Button(root, text="Delete", command=delete_text).grid(row=1, column=5, padx=10, sticky=E)
+    Button(root, text="Print", command=validate).grid(row=1, column=4, padx=10, sticky=E)
+    Button(root, text="Delete", command=delete).grid(row=1, column=5, padx=10, sticky=E)
     Button(root, text="Quit", command=quit).grid(row=1, column=6, padx=10, sticky=E)
 
-    #Types User input 
+    #Types User input & check input values is valid
     details = [customer_name, receipt_number, item_hired, amount_hired]
+    check = 0
 
     #Create the table format
     tree = ttk.Treeview(root, show='headings', height=8)
+    
     #Create the columns
     tree['columns'] = ("Name","Receipt","Item", "Amount")
     tree.column("#0", width=0, minwidth=0)
@@ -67,6 +89,7 @@ def info():
     tree.column("Receipt", anchor=W, width=150)
     tree.column("Item", anchor=W, width=200)
     tree.column("Amount", anchor=W, width=150)
+  
     #Create the headings 
     tree.heading("#0", text="Label", anchor=W)
     tree.heading("Name", text="Customer Name", anchor=W)
@@ -74,7 +97,7 @@ def info():
     tree.heading("Item", text="Hired Item", anchor=W)
     tree.heading("Amount", text="Amount Item", anchor=W)
 
-    tree.place(x=20,y=80)
+    tree.place(x=20,y=90)
 
 info()
     
