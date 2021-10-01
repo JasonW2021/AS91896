@@ -10,10 +10,11 @@ root.title("Juile's Party Hire Tracker")
 def quit():
     root.destroy()
 
-#delete a section (not working yet)
+#delete a selected row
 def delete():
     #variables that would be used throughout the program
-    global customer_name
+    x = tree.selection()[0]
+    tree.delete(x)
 
 #Check the inputs are valid
 def validate():
@@ -55,7 +56,7 @@ def validate():
 
     #check if amount hired input is valid
     if (details[3].get().isdigit()):
-        if 1 <= int(details[3].get()) <= 500:
+        if 0 < int(details[3].get()) <= 500:
             Label(root, text="                  ").grid(row=2, column=3)
             Label(root, text="                  ").grid(row=3, column=3)
             check4 = 0
@@ -63,7 +64,7 @@ def validate():
         else:
             Label(root, fg='red', text="Required").grid(row=2, column=3)
             Label(root, fg='red', text="(1-500)").grid(row=3, column=3)
-            check = 1  
+            check4 = 1  
 
     else:
         Label(root, fg='red', text="Required").grid(row=2, column=3)
