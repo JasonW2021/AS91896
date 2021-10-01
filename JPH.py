@@ -21,14 +21,24 @@ def validate():
     global details, check
 
     #check if customer name input is valid 
-    if (details[0].get().isalpha() or details[0].get().isspace) and len(details[0].get()) > 2:
+    if details[0].get().isalpha() and len(details[0].get()) > 2:
         Label(root, text="                   ").grid(row=2, column=0)
         Label(root, text="                   ").grid(row=3, column=0)
         check = 0
- 
+
     else:
-        Label(root, fg='red', text=" Required").grid(row=2, column=0)
-        Label(root, fg='red', text=" Letters").grid(row=3, column=0)
+        Label(root, fg='red', text="Required").grid(row=2, column=0)
+        Label(root, fg='red', text="(Letters)").grid(row=3, column=0)
+        check = 1
+
+    if details[1].get().isdigit() and len(details[1].get()) == 4:
+        Label(root, text="                  ").grid(row=2, column=1)
+        Label(root, text="                  ").grid(row=3, column=1)
+        check = 0
+
+    else:
+        Label(root, fg='red', text="Required").grid(row=2, column=1)    
+        Label(root, fg='red', text="(4 Digits)").grid(row=3, column=1)    
         check = 1
 
     #prints the details if all inputs are valid
