@@ -21,8 +21,23 @@ def validate():
     #variables that would be used throughout the program
     global details, check, check1, check2, check3, check4
 
+    hasAlpha = False
+    hasSpace = False
+
+    for x in details[0].get():
+        if x.isalpha():
+            hasAlpha = True
+        elif x.isspace():
+            hasSpace = True
+
+    for x in details[2].get():
+        if x.isalpha():
+            hasAlpha = True
+        elif x.isspace():
+            hasSpace = True
+
     #check if customer name input is valid 
-    if details[0].get().isalpha() and len(details[0].get()) > 2:    
+    if (details[0].get().isalpha() or (hasSpace and hasAlpha)) and len(details[0].get()) > 2:    
         Label(root, text="                   ").grid(row=2, column=0)
         Label(root, text="                   ").grid(row=3, column=0)
         check1 = 0
@@ -44,7 +59,7 @@ def validate():
         check2 = 1
 
     #check if item hired input is valid
-    if details[2].get().isalpha() and len(details[2].get()) > 2:
+    if (details[2].get().isalpha() or (hasSpace and hasAlpha)) and len(details[2].get()) > 2:    
         Label(root, text="                  ").grid(row=2, column=2)
         Label(root, text="                  ").grid(row=3, column=2)
         check3 = 0
@@ -121,7 +136,7 @@ def info():
 
     #Create the table format
     tree = ttk.Treeview(root, show='headings', height=8)
-    
+
     #Create the columns
     tree['columns'] = ("Name","Receipt","Item", "Amount")
     tree.column("#0", width=0, minwidth=0)
