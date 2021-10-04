@@ -1,10 +1,12 @@
 #Program for AS91896 Internal
 from tkinter import *
 from tkinter import ttk
+from typing import ValuesView
 
 root = Tk()
-root.geometry('780x300')
+root.geometry('800x300')
 root.title("Juile's Party Hire Tracker")
+store = []
 
 #quit the program
 def quit():
@@ -19,8 +21,9 @@ def delete():
 #Check the inputs are valid
 def validate():
     #variables that would be used throughout the program
-    global details, check, check1, check2, check3, check4
+    global details, check, value
 
+    #check if customer name input has space
     hasAlpha = False
     hasSpace = False
 
@@ -30,11 +33,14 @@ def validate():
         elif x.isspace():
             hasSpace = True
 
-    for x in details[2].get():
-        if x.isalpha():
-            hasAlpha = True
-        elif x.isspace():
-            hasSpace = True
+    #check if item hired input has space
+    hasAlpha2 = False
+    hasSpace2 = False
+    for y in details[2].get():
+        if y.isalpha():
+            hasAlpha2 = True
+        elif y.isspace():
+            hasSpace2 = True
 
     #check if customer name input is valid 
     if (details[0].get().isalpha() or (hasSpace and hasAlpha)) and len(details[0].get()) > 2:    
@@ -59,7 +65,7 @@ def validate():
         check2 = 1
 
     #check if item hired input is valid
-    if (details[2].get().isalpha() or (hasSpace and hasAlpha)) and len(details[2].get()) > 2:    
+    if (details[2].get().isalpha() or (hasSpace2 and hasAlpha2)) and len(details[2].get()) > 2:    
         Label(root, text="                  ").grid(row=2, column=2)
         Label(root, text="                  ").grid(row=3, column=2)
         check3 = 0
@@ -88,23 +94,43 @@ def validate():
 
     #prints the details if all inputs are valid
     if check1 == 0 and check2 == 0 and check3==0 and check4 ==0:
-        print()
+        printtext()
 
 #print the details from user
-def print():
+def printtext():
     #variables that would be used throughout the program
-    global tree, details
-    tree.insert(parent='', index='end', values=(details[0].get(), details[1].get(), details[2].get(), details[3].get()))
-    customer_name.delete(0, END)
-    receipt_number.delete(0, END)
-    item_hired.delete(0, END)    
-    amount_hired.delete(0, END)
+    global tree, details, store
+
+    values=(details[0].get(), details[1].get(), details[2].get(), details[3].get())
+
+    isDuplicate = False
+
+    #Compaing if the input is same as one displayed
+    for num in store:
+        if details[1].get() == num[1]:
+            print("Is Duplicate")
+            isDuplicate = True
+    
+    #if the input doesn't match it is displayed & the current input is removed 
+    if not isDuplicate:
+        store.append(values)
+        tree.insert(parent='', index='end', values=(details[0].get(), details[1].get(), details[2].get(), details[3].get()))
+        customer_name.delete(0, END)
+        receipt_number.delete(0, END)
+        item_hired.delete(0, END)    
+        amount_hired.delete(0, END)
+    else:
+        Label(root, fg='red', text="Required").grid(row=2, column=1)
+        Label(root, fg='red', text="(Repeat)").grid(row=3, column=1)
+
+    for x in store:
+        print(x)
 
 #creates the labels and buttons
 def info():
     #variables that would be used throughout the program
     global customer_name, receipt_number, item_hired, amount_hired, tree, details, check
-    
+
     #Customer Name input
     Label(root, text='Customer Name').grid(row=0, column=0, padx=20, sticky=W)
     customer_name = Entry(root, width=20)
@@ -134,8 +160,17 @@ def info():
     details = [customer_name, receipt_number, item_hired, amount_hired]
     check = 0
 
+    #scrollbar 
+    tree_frame = Frame(root)
+    tree_frame.grid(row=5, column=1,padx=(500,0),columnspan=6)
+
+    tree_scroll = Scrollbar(tree_frame)
+    tree_scroll.grid(ipady=60, sticky=E)
+
     #Create the table format
-    tree = ttk.Treeview(root, show='headings', height=8)
+    tree = ttk.Treeview(root, show='headings', height=8, yscrollcommand=tree_scroll.set)
+
+    tree_scroll.config(command=tree.yview)
 
     #Create the columns
     tree['columns'] = ("Name","Receipt","Item", "Amount")
@@ -152,7 +187,7 @@ def info():
     tree.heading("Item", text="Hired Item", anchor=W)
     tree.heading("Amount", text="Amount Item", anchor=W)
 
-    tree.place(x=20,y=90)
+    tree.grid(row=5, column=0, columnspan=6, padx=20, pady=(10,0), sticky=S)
 
 info()
     
